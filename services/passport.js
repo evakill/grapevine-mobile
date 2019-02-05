@@ -33,6 +33,7 @@ passport.serializeUser( (user, done) => {
 
 // takes the id that we stuffed in the cookie from serialize and turn it back into a user model
 passport.deserializeUser( async (id, done) => {
+  console.log('deserialize', user);
   const user = await Owner.findById( id );
   done(null, user); //attaches req.user
 });
@@ -82,7 +83,6 @@ new GoogleStrategy({
 
 passport.use('owner-local',
 new LocalStrategy(function(username, password, done) {
-  console.log('owner local strategy', username, password);
   // Find the user with the given email
   Owner.findOne({ email: username }, function (err, owner) {
     // if there's an error, finish trying to authenticate (auth failed)
@@ -93,15 +93,15 @@ new LocalStrategy(function(username, password, done) {
     // if no user present, auth failed
     if (!owner) {
       console.log('no owner account with that email');
-      return done(null, false);
+      return done(null, {bad: "email"});
     }
     // if passwords do not match, auth failed
     if (owner.password !== password) {
       console.log('incorrect password');
-      return done(null, false);
+      return done(null, {bad: "password"});
     }
     // auth has has succeeded
-    console.log(owner, 'has successfully logged in as an owner')
+    console.log(username, 'has been authorized')
     return done(null, owner);
   });
 })
@@ -128,7 +128,7 @@ new LocalStrategy(function(username, password, done) {
       return done(null, false);
     }
     // auth has has succeeded
-    console.log(ambassador, 'has successfully logged in as an ambassador')
+    console.log(username, 'has been authorized');
     return done(null, ambassador);
   });
 }));

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const Schema = mongoose.Schema;
 mongoose.connect(process.env.MONGODB_URI);
 
 const ambassadorSchema = mongoose.Schema({
@@ -15,25 +15,25 @@ const ambassadorSchema = mongoose.Schema({
       type: String,
       required: true
     },
+    address: {
+      type: String,
+      required: false,
+    },
     password: {
       type: String,
       required: true
     },
+    campaigns: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Campaign',
+    }],
+    location: {
+      type: Object,
+      required: true,
+    },
     image: {
       type: String,
       required: false,
-    },
-    location: {
-      type: String,
-      required: false
-    },
-    contact: {
-      type: String,
-      required: true,
-    },
-    campaigns: {
-      type: Array,
-      required: true,
     },
 });
 

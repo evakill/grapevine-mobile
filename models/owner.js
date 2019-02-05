@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-
+const Schema = mongoose.Schema;
 mongoose.connect(process.env.MONGODB_URI);
 
-const ownerSchema = mongoose.Schema({
+const ownerSchema = Schema({
     firstName: {
       type: String,
       required: true
@@ -27,21 +27,21 @@ const ownerSchema = mongoose.Schema({
       type: String,
       required: true,
     },
-    contact: {
+    businessEmail: {
+      type: String,
+      required: true,
+    },
+    businessAddress: {
       type: String,
       required: true,
     },
     location: {
-      type: String,
-      required: false,
+      type: Object,
+      required: true,
     },
     image: {
       type: String,
       required: false,
-    },
-    campaigns: {
-      type: Array,
-      required: true,
     },
 });
 

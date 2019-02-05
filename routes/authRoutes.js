@@ -1,9 +1,6 @@
 const passport = require('passport');
 module.exports = app => {
 
-  app.get('/'){
-    res.send('ok');
-  }
   // The route for logging users into google
   app.get(
     '/auth/google',
@@ -43,12 +40,16 @@ module.exports = app => {
 
   app.post(
     '/auth/login/owner',
-    passport.authenticate('owner-local')
-  );
+    passport.authenticate('owner-local'), function(req, res){
+      res.json(req.user);
+    });
 
   app.post(
     '/auth/login/ambassador',
-    passport.authenticate('ambassador-local')
+    passport.authenticate('ambassador-local'), function(req, res){
+      console.log('req.user', req.user)
+      res.json(req.user);
+    }
   );
 
   app.get('/api/logout', (req, res) => {
